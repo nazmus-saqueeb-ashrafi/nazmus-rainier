@@ -3,7 +3,7 @@ import cors from 'cors'
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import PostRoute from '../server/Routes/PostRoutes.js'
+import userRoutes from "./routes/userRoutes.js";
 
 
 // Routes
@@ -34,4 +34,4 @@ mongoose.connect(process.env.MONGO_DB, {
 
 // usage of routes
 
-app.use('/api/post', PostRoute)
+app.use('/api/users', userRoutes);
