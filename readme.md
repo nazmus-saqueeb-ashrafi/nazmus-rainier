@@ -11,3 +11,9 @@
 
 - Routes and controllers created to create patients
 - Routes and controllers created to login patients and admin
+
+# Commit 4: Client-side login functionality added
+
+- Created a react app and added react router
+- Installed tailwind UI and added a login and registration page
+- Added login functonality in the login page
