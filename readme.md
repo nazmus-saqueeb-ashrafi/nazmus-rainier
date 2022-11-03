@@ -17,3 +17,7 @@
 - Created a react app and added react router
 - Installed tailwind UI and added a login and registration page
 - Added login functonality in the login page
+
+# Commit 5: Client-side registration functionality added
+
+- Added registration functonality in the registration page
