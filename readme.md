@@ -7,7 +7,7 @@
 
 - added a script to add admin user using 'npm data:import'
 
-# Commit 3: Register and login func added in backend
+# Commit 3: Register and login routes added
 
 - Routes and controllers created to create patients
 - Routes and controllers created to login patients and admin
