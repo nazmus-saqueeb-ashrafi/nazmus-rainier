@@ -8,7 +8,9 @@ const AdminView = ({user}) => {
   const [patientEmail, setPatientEmail] = useState('')
   const [patientId, setPatientId] = useState('')
   const [appointmentId, setAppointmentId] = useState('')
+  const [selectedRadioButton, setSelectedRadioButton] = useState()
   const [searchResult, setSearchResult] = useState([])
+  const [message, setMessage] = useState('')
   
 
   // making slots for appointments
@@ -118,11 +120,104 @@ const AdminView = ({user}) => {
         .then(data => {
             
             setSearchResult(data)
+            console.log(data)
+            
             
         })
 
         
     }
+
+    const filterByCanceled = () => {
+        
+      
+        fetch(`http://localhost:5000/api/appointments/filter-by-canceled`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+        })
+        .then(res => res.json())
+        .then(data => {
+            
+            setSearchResult(data)
+            if(data.length === 0){
+                setMessage('No data found')
+            }else{
+                setMessage('')
+            }
+            
+        })
+
+        
+    }
+
+    const filterByDelayed = () => {
+        
+      
+        fetch(`http://localhost:5000/api/appointments/filter-by-delay`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+        })
+        .then(res => res.json())
+        .then(data => {
+            
+            setSearchResult(data)
+            if(data.length === 0){
+                setMessage('No data found')
+            }else{
+                setMessage('')
+            }
+            
+        })
+
+        
+
+    }
+
+    const filterByRescheduled = () => {
+        
+      
+        fetch(`http://localhost:5000/api/appointments/filter-by-rescheduled`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+        })
+        .then(res => res.json())
+        .then(data => {
+            
+            setSearchResult(data)
+            if(data.length === 0){
+                setMessage('No data found')
+            }else{
+                setMessage('')
+            }
+            
+        })
+
+        
+
+    }
+
+
+    useEffect(() => {
+
+        if (selectedRadioButton === 'canceled') {
+            filterByCanceled()
+        }
+        else if (selectedRadioButton === 'delayed') {
+            filterByDelayed()
+        }
+        else if (selectedRadioButton === 'rescheduled') {
+            filterByRescheduled()
+        }
+    }, [selectedRadioButton, setSelectedRadioButton])
 
 
 
@@ -145,6 +240,37 @@ const AdminView = ({user}) => {
       <input class="ml-5 outline w-56" type="text" id="searchAID" name="searchAID" placeholder='Search by appointment ID' value={appointmentId} onChange={(e)=>setAppointmentId(e.target.value)} />
       <button class="ml-5 bg-sky-600 text-white rounded-md p-2" onClick={()=>searchByAppointmentId()}>Search</button>
     </div>
+
+    
+
+    <div class="mt-3 p-5">
+      <h3 className='text-xl underline'>Filters</h3>
+      <div class="flex">
+        <div>
+          <div class="form-check">
+            <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="canceled" onChange={e=>setSelectedRadioButton(e.target.value)}/>
+            <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault1">
+              Canceled previously
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="delayed" onChange={e=>setSelectedRadioButton(e.target.value)}/>
+            <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault2">
+              Delayed
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="rescheduled" onChange={e=>setSelectedRadioButton(e.target.value)} />
+            <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault2">
+              Resheduled
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {message}
     
 
     <div class="bg-white">
