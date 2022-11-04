@@ -33,3 +33,9 @@
 - patients see booked slots as unavailable
 - patient can reshedule the appointment with a reason ( new appointment chosen by patient marked as resheduled with reason in db )
 - patient can cancel appointment (new appointment choosen by patient marked as cancel, indicating patient has canceled appointment before (will use this for filtration in admin side) )
+
+# Commit 8: admin view - search functionality added
+
+- patients can be searched by email
+- patients can be searched by patient ID
+- patients can be searched by appointment ID

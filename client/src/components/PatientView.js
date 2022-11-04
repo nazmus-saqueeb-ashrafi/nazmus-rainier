@@ -160,11 +160,7 @@ const PatientView = ({user}) => {
         window.location.reload()
 
     }
-   
-
-    
-
-
+  
 
 
   return (

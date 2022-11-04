@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
+import AdminView from '../components/AdminView';
 import PatientView from '../components/PatientView';
 
 const Home = () => {
@@ -33,6 +34,7 @@ const Home = () => {
     {user.isAdmin ? 
     // Admin View
      (<>
+     <AdminView user={user}/>
 
      </>)
      :

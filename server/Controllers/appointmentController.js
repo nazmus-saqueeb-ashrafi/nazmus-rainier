@@ -60,11 +60,39 @@ const deleteAppointment = asyncHandler(async (req, res) => {
     }
 })
 
+// @desc    Search by email
+// @route   GET /api/appointments/search-by-name/:name
+// @access  Public
+const searchByEmail = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ patientEmail: req.params.email })
+    res.json(appointments)
+})
+
+// @desc    Search by patientId
+// @route   GET /api/appointments/search-by-pid/:pid
+// @access  Public
+const searchByPatientId = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ patientId: req.params.pid })
+    res.json(appointments)
+})
+
+// @desc    Search by appointmentId
+// @route   GET /api/appointments/search-by-aid/:aid
+// @access  Public
+const searchByAppointmentId = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ _id: req.params.aid })
+    res.json(appointments)
+})
+
+
 
 export {
     createAppointment,
     getAllAppointments,
     deleteAppointment,
+    searchByEmail,
+    searchByPatientId,
+    searchByAppointmentId,
 
 
 }
