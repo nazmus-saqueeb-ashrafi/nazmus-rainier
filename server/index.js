@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
 
 
 // Routes
@@ -33,5 +34,5 @@ mongoose.connect(process.env.MONGO_DB, {
 
 
 // usage of routes
-
 app.use('/api/users', userRoutes);
+app.use('/api/appointments', appointmentRoutes);

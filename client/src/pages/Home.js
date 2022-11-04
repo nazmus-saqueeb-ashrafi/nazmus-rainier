@@ -23,7 +23,7 @@ const Home = () => {
 
       const data = await res.json()
       setUser(data)
-      console.log(data)
+      // console.log(data)
     }
     fetchUser()
   }, [])
