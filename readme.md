@@ -4,9 +4,9 @@
 - install dependencies using npm install
 - add env variable in server folder in a .env file
 
-NODE_ENV = development
-PORT = 5000
-MONGO_DB = "mongodb+srv://nazmus:Nazmus123@todocluster.ey6jhxf.mongodb.net/?retryWrites=true&w=majority"
+  - NODE_ENV = development
+  - PORT = 5000
+  - MONGO_DB = "mongodb+srv://nazmus:Nazmus123@todocluster.ey6jhxf.mongodb.net/?retryWrites=true&w=majority"
 
 - cd client and npm start
 - cd server and npm run server
