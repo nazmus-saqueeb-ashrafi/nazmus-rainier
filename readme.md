@@ -49,3 +49,11 @@
 # Commit 10: admin view - Appointemnt and patient detail page added
 
 - All appointment and patient details can be accessed in a seperate page
+
+# Commit 11: admin view - patient reshedule feature added
+
+- Admin can now reshedule patient's appointment with a reason
+
+# Commit 12: admin view - push to end of current day shhedule of admin added
+
+- Admin can now push users who missed their appointments to end of the admins schedule for the day

@@ -13,7 +13,7 @@ const PatientView = ({user}) => {
 
     // making slots for appointments
     let intime = "8:00 Am"
-  let outtime = "10:00 Am"
+  let outtime = "10:00 Pm"
   const [result, setResult] = useState([])
 //   console.log("Array", result)
 

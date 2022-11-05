@@ -122,6 +122,65 @@ const filterByRescheduled = asyncHandler(async (req, res) => {
     res.json(appointments)
 })
 
+// @desc    Remove lastest for all
+// @route   GET /api/appointments/remove-latest
+// @access  Public
+const removeLatest = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ })
+    appointments.forEach(async (appointment) => {
+        appointment.latest = false
+        await appointment.save()
+    })
+    res.json(appointments)
+})
+
+
+// @desc    Convert to latest
+// @route   PUT /api/appointments/convert-to-latest/:id
+// @access  Public
+const convertToLatest = asyncHandler(async (req, res) => {
+    const appointment = await Appointment.findById(req.params.id)
+
+    // const appointments = await Appointment.find({})
+    // appointments.forEach(async (appoint) => {
+    //     if(appointment._id === appoint._id) {
+            
+    //     }else{
+    //         await appoint.updateOne({ latest: false })
+    //     }
+    // })
+    
+
+    if (appointment) {
+        appointment.latest = true
+        const updatedAppointment = await appointment.save()
+        res.json(updatedAppointment)
+    } else {
+        res.status(404)
+        throw new Error('Appointment not found')
+    }
+})
+
+// @desc    Push to last
+// @route   PUT /api/appointments/push-to-last/:id
+// @access  Public
+const pushToLast = asyncHandler(async (req, res) => {
+    const appointment = await Appointment.findById(req.params.id)
+    const { time } = req.body
+
+    if (appointment && appointment.latest!==true) {
+        appointment.latest = true
+        appointment.time = time
+        const updatedAppointment = await appointment.save()
+        res.json(updatedAppointment)
+    } else if(appointment.latest===true) {
+        pass
+    }else{
+        res.status(404)
+        throw new Error('Appointment not found')
+    }
+})
+
 
 
 export {
@@ -135,6 +194,9 @@ export {
     filterByCanceled,
     filterByDelay,
     filterByRescheduled,
+    convertToLatest,
+    pushToLast,
+    removeLatest
 
 
 

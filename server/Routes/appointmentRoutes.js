@@ -11,7 +11,11 @@ import {
   filterByCanceled,
   filterByDelay,
   filterByRescheduled,
+  convertToLatest,
+  pushToLast,
+  removeLatest
  
+
 } from '../controllers/appointmentController.js'
 
 // appointments/create-appointment
@@ -25,9 +29,9 @@ router.get('/search-by-aid/:aid', searchByAppointmentId)
 router.get('/filter-by-canceled', filterByCanceled)
 router.get('/filter-by-delay', filterByDelay)
 router.get('/filter-by-rescheduled', filterByRescheduled)
-
-
-
+router.put('/convert-to-latest/:id', convertToLatest)
+router.put('/push-to-last/:id', pushToLast)
+router.put('/remove-latest-tag', removeLatest)
 
 
 export default router

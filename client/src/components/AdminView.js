@@ -16,11 +16,12 @@ const AdminView = ({user}) => {
   const [message, setMessage] = useState('')
   const [resheduleMessage, setResheduleMessage] = useState(localStorage.getItem( 'resheduleMessage' ) || '')
   const [reschedule, setReschedule] = useState(localStorage.getItem( 'reshedule' ) || false)
+
   
 
-  // making slots for appointments
+  // making slots for appointments (daily shift is from 8:00 Am to 10:00 Pm)
     let intime = "8:00 Am"
-  let outtime = "10:00 Am"
+  let outtime = "10:00 Pm"
   const [result, setResult] = useState([])
 //   console.log("Array", result)
 
@@ -295,6 +296,94 @@ const AdminView = ({user}) => {
     window.location.reload()
   }
 
+  // calculate latest free slot
+  let latestAppointment = {time: ''}
+  let latestFreeAppointment= ''
+
+    
+    useEffect(() => {
+
+      appointments.forEach(appointment => {
+        console.log(appointment)
+        if(appointment.time>latestAppointment.time){
+          latestAppointment = appointment
+        }
+      })
+
+
+    let latestAppointmentTime = latestAppointment.time
+    console.log(latestAppointment)
+
+
+      latestFreeAppointment = moment(latestAppointmentTime, 'hh:mm a').add(20, 'minutes').format('hh:mm a')
+      console.log("Latest free Appointment", latestFreeAppointment)
+
+      // remove latest tag from all
+      const removeLatestTag = async () => {
+        
+        await fetch(`http://localhost:5000/api/appointments/remove-latest-tag`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            
+            })
+            .then(res => res.json())
+            .then(data => {
+              // console.log(data)
+            })
+      }
+      removeLatestTag()
+
+
+      // convert to latest appointment to latest 
+        const markAsLatest = async () => {
+          await fetch(`http://localhost:5000/api/appointments/convert-to-latest/${latestAppointment._id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            
+            })
+            .then(res => res.json())
+            .then(data => {
+              // console.log(data)
+            })
+
+        }
+        markAsLatest()
+        
+      
+
+    }, [appointments,latestAppointment])
+    
+    //
+
+  const onPushToLastClick = (aid) => {
+    // latestFreeAppointment
+    appointments.map(appointment => {
+      if (appointment._id === aid) {
+        fetch(`http://localhost:5000/api/appointments/push-to-last/${appointment._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            time: latestFreeAppointment
+          })
+          
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+          })
+      }
+    })
+    window.location.reload()
+
+  }
+
+
 
   return (
     <>
@@ -410,7 +499,11 @@ const AdminView = ({user}) => {
                                 <span class="mr-2">Reschedule</span>
                             </button>
 
-                            {/* <input class="ml-5 outline" type="text" id="reason" name="reason" placeholder='Reason for reshedule' value={reason} onChange={(e)=>setReason(e.target.value)}/> */}
+                            <button class="bg-blue-600 text-gray-100 font-semibold py-2 px-4 rounded inline-flex items-center ml-6" onClick={()=> onPushToLastClick(bookedAppointment._id, bookedAppointment.patientId, bookedAppointment.patientEmail)} >
+                                <span class="mr-2">Push to last</span>
+                            </button>
+
+                            
                         </td>
                     </tr>
                     }else{
