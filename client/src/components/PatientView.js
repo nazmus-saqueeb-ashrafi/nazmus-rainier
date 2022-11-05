@@ -8,6 +8,8 @@ const PatientView = ({user}) => {
     const [reason, setReason] = useState(localStorage.getItem( 'reason' ) || '')
     const [reschedule, setReschedule] = useState(localStorage.getItem( 'reshedule' ) || false)
     const [cancel, setCancel] = useState(localStorage.getItem( 'cancel' ) || false)
+    const [message, setMessage] = useState(localStorage.getItem( 'message' ) || '')
+
 
     // making slots for appointments
     let intime = "8:00 Am"
@@ -61,6 +63,7 @@ const PatientView = ({user}) => {
     window.localStorage.removeItem('reshedule');
     window.localStorage.removeItem('reason');
     window.localStorage.removeItem('cancel');
+    window.localStorage.removeItem('message');
 
     window.location.reload()
   }
@@ -109,6 +112,10 @@ const PatientView = ({user}) => {
       
         localStorage.setItem( 'reshedule', true );
         localStorage.setItem( 'reason', reason );
+        
+
+        
+        localStorage.setItem( 'message', 'Choose a new time slot to reshedule' );
         
         // delete appointment
 
@@ -166,6 +173,8 @@ const PatientView = ({user}) => {
   return (
     <>
     <h2 class="p-5 text-xl font-semibold">Welcome <span className='text-sky-600'>{user.name}</span>, please choose an available time for your appointment.</h2>
+
+    <div className='text-3xl p-10 text-red-700'>{message}</div>
     
       <div class="bg-white">
 

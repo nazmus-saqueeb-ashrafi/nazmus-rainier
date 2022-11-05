@@ -14,6 +14,8 @@ const AdminView = ({user}) => {
   const [selectedRadioButton, setSelectedRadioButton] = useState()
   const [searchResult, setSearchResult] = useState([])
   const [message, setMessage] = useState('')
+  const [resheduleMessage, setResheduleMessage] = useState(localStorage.getItem( 'resheduleMessage' ) || '')
+  const [reschedule, setReschedule] = useState(localStorage.getItem( 'reshedule' ) || false)
   
 
   // making slots for appointments
@@ -228,6 +230,72 @@ const AdminView = ({user}) => {
     }
 
 
+    const onResheduleClick = (aid, pid, patientEmail) => {
+
+        
+        let reason = prompt("Please enter the reason:", "");
+    
+        localStorage.setItem( 'reshedule', true );
+        localStorage.setItem( 'reason', reason );
+        localStorage.setItem( 'resheduleMessage', 'Choose a new time slot to reshedule' );
+        localStorage.setItem( 'pid', pid );
+        localStorage.setItem( 'patientEmail', patientEmail );
+
+        
+        // delete appointment
+
+        appointments.map(appointment => {
+            if (appointment._id === aid) {
+                fetch(`http://localhost:5000/api/appointments/delete-appointment/${appointment._id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                    })
+            }
+        })
+        window.location.reload()
+
+    }
+
+    const createAppointment = (time) => {
+      
+
+      console.log("Time", time)
+      fetch('http://localhost:5000/api/appointments/create-appointment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        patientId: localStorage.getItem('pid'),
+        patientEmail: localStorage.getItem('patientEmail'),
+        time: time,
+        rescheduled: localStorage.getItem('reshedule'),
+        rescheduledReason: localStorage.getItem('reason'),
+        delay: false,
+        canceled: false,
+        latest: false
+      })
+    })
+
+    window.localStorage.removeItem('reshedule');
+    window.localStorage.removeItem('reason');
+    window.localStorage.removeItem('message');
+    window.localStorage.removeItem('pid');
+    window.localStorage.removeItem('patientEmail');
+    window.localStorage.removeItem('resheduleMessage');
+    
+
+    window.location.reload()
+  }
+
+
   return (
     <>
     <h2 class="p-5 text-xl font-semibold">Welcome to the admin portal <span className='text-sky-600'>{user.name}</span>.</h2>
@@ -276,7 +344,10 @@ const AdminView = ({user}) => {
       </div>
     </div>
 
-    {message}
+    <div class="flex">
+      <div className='text-3xl p-10 text-red-700'>{message}</div>
+      <div className='text-3xl p-10 text-red-700'>{resheduleMessage}</div>
+    </div>
     
 
     <div class="bg-white">
@@ -334,6 +405,12 @@ const AdminView = ({user}) => {
                             <button class="bg-orange-300 text-gray-600 font-semibold py-2 px-4 rounded inline-flex items-center ml-6" onClick={()=>onDetailClick(bookedAppointment._id)}>
                                 <span class="mr-2">Click for details</span>
                             </button>
+
+                            <button class="bg-green-600 text-gray-100 font-semibold py-2 px-4 rounded inline-flex items-center ml-6" onClick={()=> onResheduleClick(bookedAppointment._id, bookedAppointment.patientId, bookedAppointment.patientEmail)} >
+                                <span class="mr-2">Reschedule</span>
+                            </button>
+
+                            {/* <input class="ml-5 outline" type="text" id="reason" name="reason" placeholder='Reason for reshedule' value={reason} onChange={(e)=>setReason(e.target.value)}/> */}
                         </td>
                     </tr>
                     }else{
@@ -342,26 +419,27 @@ const AdminView = ({user}) => {
                         <td class="p-4">
                             {time}
                         </td>
+                        {reschedule ?
                         <td class="p-4">
-                            <button class="bg-green-300 text-gray-600 font-semibold py-2 px-4 rounded inline-flex items-center" disabled>
+                            <button class="bg-green-300 text-gray-600 font-semibold py-2 px-4 rounded inline-flex items-center" onClick={() => createAppointment(time)}>
                                 <span class="mr-2">Available</span>
                             </button>
                         </td>
+                        :
+                        <td class="p-4">
+                            <button class="bg-gray-300 text-gray-600 font-semibold py-2 px-4 rounded inline-flex items-center" disabled onClick={() => createAppointment(time)}>
+                                <span class="mr-2">Available</span>
+                            </button>
+                        </td>
+                        }
+                        
                     </tr>
                   )
 
                     }
                     
                 })
-                }
-
-
-
-
-                
-                
-                
-                
+                }      
                 
               </tbody>
           </table>
