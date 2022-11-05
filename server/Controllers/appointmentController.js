@@ -43,6 +43,20 @@ const createAppointment = asyncHandler(async (req, res) => {
 const getAllAppointments = asyncHandler(async (req, res) => {
     const appointments = await Appointment.find({})
     res.json(appointments)
+
+})
+
+// @desc    Get appointment by id
+// @route   GET /api/appointments/get-appointment/:id
+// @access  Public
+const getAppointmentById = asyncHandler(async (req, res) => {
+    const appointment = await Appointment.findById(req.params.id)
+    if (appointment) {
+        res.json(appointment)
+    } else {
+        res.status(404)
+        throw new Error('Appointment not found')
+    }   
 })
 
 // @desc    Delete an appointment
@@ -84,15 +98,44 @@ const searchByAppointmentId = asyncHandler(async (req, res) => {
     res.json(appointments)
 })
 
+// @desc    Filter by canceled
+// @route   GET /api/appointments/filter-by-canceled
+// @access  Public
+const filterByCanceled = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ canceled: true })
+    res.json(appointments)
+})
+
+// @desc    Filter by delay
+// @route   GET /api/appointments/filter-by-delay
+// @access  Public
+const filterByDelay = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ delay: true })
+    res.json(appointments)
+})
+
+// @desc    Filter by rescheduled
+// @route   GET /api/appointments/filter-by-rescheduled
+// @access  Public
+const filterByRescheduled = asyncHandler(async (req, res) => {
+    const appointments = await Appointment.find({ rescheduled: true })
+    res.json(appointments)
+})
+
 
 
 export {
     createAppointment,
     getAllAppointments,
+    getAppointmentById,
     deleteAppointment,
     searchByEmail,
     searchByPatientId,
     searchByAppointmentId,
+    filterByCanceled,
+    filterByDelay,
+    filterByRescheduled,
+
 
 
 }

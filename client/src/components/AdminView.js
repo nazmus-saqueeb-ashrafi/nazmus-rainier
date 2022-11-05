@@ -1,8 +1,11 @@
 import React from 'react'
 import moment from 'moment';
 import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 
 const AdminView = ({user}) => {
+
+  let navigate = useNavigate();
 
   const [appointments, setAppointments] = useState([])
   const [patientEmail, setPatientEmail] = useState('')
@@ -220,6 +223,9 @@ const AdminView = ({user}) => {
     }, [selectedRadioButton, setSelectedRadioButton])
 
 
+    const onDetailClick = (aid) => {
+      navigate(`/detail/${aid}`)
+    }
 
 
   return (
@@ -325,7 +331,7 @@ const AdminView = ({user}) => {
                                 <span class="mr-2">Booked by {bookedAppointment.patientEmail}</span>
                             </button>
 
-                            <button class="bg-orange-300 text-gray-600 font-semibold py-2 px-4 rounded inline-flex items-center ml-6" disabled>
+                            <button class="bg-orange-300 text-gray-600 font-semibold py-2 px-4 rounded inline-flex items-center ml-6" onClick={()=>onDetailClick(bookedAppointment._id)}>
                                 <span class="mr-2">Click for details</span>
                             </button>
                         </td>

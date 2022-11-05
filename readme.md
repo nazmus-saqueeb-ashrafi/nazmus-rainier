@@ -36,6 +36,16 @@
 
 # Commit 8: admin view - search functionality added
 
-- patients can be searched by email
-- patients can be searched by patient ID
-- patients can be searched by appointment ID
+- patients can be searched by email (please enter right email)
+- patients can be searched by patient ID (please enter right patientId)
+- patients can be searched by appointment ID (please enter right appointmentId)
+
+# Commit 9: admin view - filter functionality added
+
+- appointments can be filtered by appointments which were made after canceling a previous appointment
+- appointments can be filtered by delayed appointments
+- appointments can be filtered by resheduled appointments
+
+# Commit 10: admin view - Appointemnt and patient detail page added
+
+- All appointment and patient details can be accessed in a seperate page
