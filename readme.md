@@ -1,3 +1,23 @@
+## Installation and demo users
+
+- download repo
+- install dependencies using npm install
+- cd client and npm start
+- cd server and npm run server
+- cd server and npm data:import (change data in /server/data.users.js and seed an admin user using this command)
+
+# Demo Patients
+
+- email: nazmus.as@gmail.com, password:123456
+- email: patient1@example.com, password:123456
+
+# Demo Admin
+
+- email: admin@example.com, password:123456
+  (seeded)
+
+## Commit descriptions
+
 # Commit 1: initial server setup
 
 - created the server
@@ -57,3 +77,9 @@
 # Commit 12: admin view - push to end of current day shhedule of admin added
 
 - Admin can now push users who missed their appointments to end of the admins schedule for the day
+
+# Commit 13: finishing touch
+
+- Added details to readme.md
+
+Thank you !
